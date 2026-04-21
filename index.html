@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yellowstone Electrical Quotes</title>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#d4a52e">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#12141d;
+      --panel:#1b1f2a;
+      --panel2:#222736;
+      --line:rgba(255,255,255,0.08);
+      --gold:#d9a93d;
+      --gold2:#f0bf57;
+      --text:#ffffff;
+      --muted:#b7bcc8;
+      --green:#526948;
+      --green2:#31432f;
+      --red:#6b2e35;
+      --red2:#4d1f25;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.04), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03), transparent 30%),
+        linear-gradient(180deg,#141722 0%, #11131a 100%);
+    }
+
+    .wrap{
+      max-width:1280px;
+      margin:0 auto;
+      padding:22px 18px 28px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:18px;
+      flex-wrap:wrap;
+      padding-bottom:18px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      margin-bottom:20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:flex-start;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .brand-logo{
+      width:58px;
+      height:58px;
+      object-fit:contain;
+      display:block;
+      margin-top:4px;
+      flex:0 0 auto;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,.25));
+    }
+
+    .brand-text h1{
+      margin:0 0 6px;
+      color:var(--gold2);
+      font-size:28px;
+      letter-spacing:0.5px;
+      line-height:1.05;
+    }
+
+    .brand-text .sub{
+      color:#ddd;
+      font-size:15px;
+      margin:2px 0;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .btn{
+      border:none;
+      border-radius:10px;
+      padding:12px 18px;
+      font-weight:700;
+      cursor:pointer;
+      color:#fff;
+      font-size:15px;
+      box-shadow:0 6px 18px rgba(0,0,0,.18);
+    }
+
+    .btn-neutral{background:var(--panel)}
+    .btn-green{background:var(--green)}
+    .btn-gold{background:var(--gold);color:#111}
+    .btn-red{background:var(--red)}
+    .btn:hover{opacity:0.96}
+
+    .main{
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap:18px;
+    }
+
+    @media (max-width:980px){
+      .main{grid-template-columns:1fr}
+    }
+
+    .left-col, .right-col{
+      display:grid;
+      gap:18px;
+      align-content:start;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(37,42,59,0.88), rgba(28,31,44,0.95));
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:0 12px 30px rgba(0,0,0,0.18);
+      backdrop-filter: blur(4px);
+    }
+
+    .card h2{
+      margin:0 0 14px;
+      color:var(--gold2);
+      font-size:20px;
+      letter-spacing:0.2px;
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .grid3{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width:720px){
+      .grid2,.grid3{grid-template-columns:1fr}
+    }
+
+    label{
+      display:block;
+      color:#d5d8e1;
+      font-size:13px;
+      margin-bottom:6px;
+    }
+
+    input, select, textarea{
+      width:100%;
+      border:1px solid rgba(255,255,255,0.06);
+      background:linear-gradient(180deg, rgba(56,60,78,0.72), rgba(47,51,67,0.72));
+      color:#fff;
+      border-radius:10px;
+      padding:11px 12px;
+      font-size:15px;
+      outline:none;
+    }
+
+    textarea{
+      min-height:110px;
+      resize:vertical;
+    }
+
+    .inline-end{
+      display:flex;
+      align-items:end;
+    }
+
+    .save-customer-btn{
+      width:100%;
+    }
+
+    .tile-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width:560px){
+      .tile-grid{grid-template-columns:1fr}
+    }
+
+    .tile-btn{
+      width:100%;
+      text-align:left;
+      background:linear-gradient(180deg, rgba(40,45,61,0.95), rgba(32,36,50,0.95));
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:12px;
+      color:#fff;
+      padding:14px 16px;
+      cursor:pointer;
+      min-height:68px;
+    }
+
+    .tile-btn strong{
+      display:block;
+      font-size:18px;
+      margin-bottom:4px;
+      color:#fff;
+    }
+
+    .tile-btn span{
+      color:#ddd6b4;
+      font-size:14px;
+    }
+
+    .mini-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .check-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    @media (max-width:760px){
+      .check-grid{grid-template-columns:1fr}
+    }
+
+    .check{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:12px;
+      padding:12px;
+      background:linear-gradient(180deg, rgba(40,45,61,0.95), rgba(32,36,50,0.95));
+    }
+
+    .check input{
+      width:auto;
+      transform:scale(1.15);
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:12px;
+    }
+
+    th, td{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      padding:10px 8px;
+      text-align:left;
+      font-size:14px;
+    }
+
+    th{
+      color:#fff1bf;
+      background:rgba(255,255,255,0.04);
+      font-weight:700;
+    }
+
+    td input{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.07);
+      padding:8px 9px;
+      border-radius:8px;
+      font-size:14px;
+    }
+
+    .totals{
+      margin-top:14px;
+      padding-top:10px;
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+
+    .totals .row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:8px 0;
+      font-size:15px;
+    }
+
+    .totals .grand{
+      font-size:18px;
+      font-weight:700;
+      color:var(--gold2);
+      border-top:1px solid rgba(255,255,255,0.08);
+      margin-top:6px;
+      padding-top:12px;
+    }
+
+    .saved-item{
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:12px;
+      padding:12px;
+      background:linear-gradient(180deg, rgba(40,45,61,0.95), rgba(32,36,50,0.95));
+      margin-bottom:10px;
+    }
+
+    .saved-item small{
+      display:block;
+      margin-top:4px;
+      color:#c4c8d3;
+    }
+
+    .saved-actions{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+
+    .status{
+      margin-top:12px;
+      font-size:13px;
+      color:#a8d8b1;
+    }
+
+    .footer-logos{
+      margin-top:20px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,0.06);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+    }
+
+    .footer-logos img{
+      display:block;
+      max-height:46px;
+      width:auto;
+      object-fit:contain;
+      flex:0 0 auto;
+      filter:drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+    }
+
+    .footer-logos img.logo-tall{
+      max-height:60px;
+    }
+
+    .footer-logos img.logo-wide{
+      max-height:38px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <img src="logo.png" alt="Yellowstone Electrical" class="brand-logo">
+        <div class="brand-text">
+          <h1>YELLOWSTONE ELECTRICAL</h1>
+          <div class="sub">Field Rise, Littleover, Derby, DE23 1DW</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="btn btn-neutral" id="newQuoteBtn" type="button">New Quote</button>
+        <button class="btn btn-green" id="saveQuoteBtn" type="button">Save Quote</button>
+        <button class="btn btn-gold" id="downloadPdfBtn" type="button">Download PDF</button>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="left-col">
+        <div class="card">
+          <h2>Quote Details</h2>
+          <div class="grid2">
+            <div>
+              <label>Quote Number</label>
+              <input id="quoteNo">
+            </div>
+            <div>
+              <label>Quote Date</label>
+              <input id="quoteDate" type="date">
+            </div>
+            <div>
+              <label>Expiry Date</label>
+              <input id="expiryDate" type="date">
+            </div>
+            <div>
+              <label>Saved Customers</label>
+              <select id="savedCustomerSelect">
+                <option value="">Saved Customers</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid2" style="margin-top:12px;">
+            <div>
+              <label>Name</label>
+              <input id="custName">
+            </div>
+            <div class="inline-end">
+              <button class="btn btn-neutral save-customer-btn" id="saveCustomerBtn" type="button">Save Customer</button>
+            </div>
+            <div>
+              <label>Telephone</label>
+              <input id="custPhone">
+            </div>
+            <div>
+              <label>Address</label>
+              <input id="custAddress">
+            </div>
+            <div>
+              <label>Email</label>
+              <input id="custEmail">
+            </div>
+            <div>
+              <label>Search Saved Quotes</label>
+              <input id="searchQuotes">
+            </div>
+          </div>
+
+          <div class="status" id="statusLine">Ready.</div>
+        </div>
+
+        <div class="card">
+          <h2>EV Chargers</h2>
+          <div class="tile-grid">
+            <button class="tile-btn" id="btnZappi" type="button"><strong>Zappi</strong><span>£650</span></button>
+            <button class="tile-btn" id="btnOhme" type="button"><strong>Ohme</strong><span>£530</span></button>
+            <button class="tile-btn" id="btnBg" type="button"><strong>BG Sync</strong><span>£430</span></button>
+            <button class="tile-btn" id="btnHyper" type="button"><strong>Hypervolt</strong><span>£645</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="card">
+          <h2>Labour</h2>
+          <div class="tile-grid">
+            <button class="tile-btn" type="button" id="btnLabourStandard"><strong>Standard Install</strong><span>£350</span></button>
+            <button class="tile-btn" type="button" id="btnLabourComplex"><strong>Complex Install</strong><span>£550</span></button>
+            <button class="tile-btn" type="button" id="btnLabourDay"><strong>Full Day Rate</strong><span>£300</span></button>
+            <button class="tile-btn" type="button" id="showCustomLabour"><strong>Custom Labour</strong><span>Enter own amount</span></button>
+          </div>
+
+          <div class="grid2" id="customLabourWrap" style="display:none;margin-top:12px;">
+            <div>
+              <label>Description</label>
+              <input id="customLabourDesc" value="Labour - Custom">
+            </div>
+            <div>
+              <label>Price (£)</label>
+              <input id="customLabourPrice" type="number" min="0" step="0.01">
+            </div>
+            <div style="grid-column:1 / -1;">
+              <button class="btn btn-neutral" id="addCustomLabourBtn" type="button" style="width:100%;">Add Custom Labour</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Cable Calculator</h2>
+          <div class="grid3">
+            <div>
+              <label>Cable Type</label>
+              <select id="cableType">
+                <option value="4swa">4mm SWA</option>
+                <option value="6swa">6mm SWA</option>
+                <option value="4ev">4mm EV Ultra</option>
+                <option value="6ev">6mm EV Ultra</option>
+              </select>
+            </div>
+            <div>
+              <label>Unit £</label>
+              <input id="cableUnitPreview" readonly>
+            </div>
+            <div>
+              <label>Length m</label>
+              <input id="cableLength" type="number" step="0.1" min="0" placeholder="Length m">
+            </div>
+          </div>
+          <div class="mini-actions">
+            <button class="btn btn-neutral" id="addCableBtn" type="button">Add Cable</button>
+            <button class="btn btn-red" id="clearItemsBtn" type="button">Clear Items</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Optional Extras</h2>
+          <div class="check-grid">
+            <label class="check">
+              <input type="checkbox" id="extraConsumer">
+              <span>External IP Consumer Unit (£85)</span>
+            </label>
+            <label class="check">
+              <input type="checkbox" id="extraTails">
+              <span>External Meter Tails & Connection Boxes (£50)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main" style="margin-top:18px;">
+      <div class="left-col">
+        <div class="card">
+          <h2>Quote Items</h2>
+          <div style="overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Qty</th>
+                  <th>Unit £</th>
+                  <th>Total £</th>
+                  <th>Remove</th>
+                </tr>
+              </thead>
+              <tbody id="itemsBody"></tbody>
+            </table>
+          </div>
+
+          <div class="mini-actions">
+            <button class="btn btn-neutral" id="addManualBtn" type="button">Add Manual Item</button>
+          </div>
+
+          <div class="totals">
+            <div class="row"><span>Cost</span><strong>£<span id="costTotal">0.00</span></strong></div>
+            <div class="row"><span>Margin (10%)</span><strong>£<span id="marginTotal">0.00</span></strong></div>
+            <div class="row"><span>Quoted Price</span><strong>£<span id="quotedTotal">0.00</span></strong></div>
+            <div class="row grand"><span>Total</span><strong>£<span id="grandTotal">0.00</span></strong></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Notes / Instructions</h2>
+          <label>Comments or special instructions</label>
+          <textarea id="quoteNotes"></textarea>
+
+          <label style="margin-top:12px;">Terms & Conditions</label>
+          <textarea id="quoteTerms">• Quote valid for 14 days
+• Installation subject to site survey
+• Additional works may be charged separately
+• Payment 40% prior to installation, 40% day of installation, 20% upon completion</textarea>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="card">
+          <h2>Saved Quotes</h2>
+          <div class="mini-actions" style="margin-top:0;margin-bottom:12px;">
+            <button class="btn btn-neutral" id="refreshQuotesBtn" type="button">Refresh</button>
+            <button class="btn btn-red" id="deleteAllQuotesBtn" type="button">Delete All</button>
+          </div>
+          <div id="savedQuotesList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-logos">
+      <img src="Dahua-Registered-Installer.png" alt="Dahua" class="logo-tall">
+      <img src="city-guilds-logo.png" alt="City & Guilds" class="logo-wide">
+      <img src="HIKVision-Approved-Installers.jpg" alt="Hikvision" class="logo-wide">
+      <img src="lcl.png" alt="LCL Awards" class="logo-wide">
+      <img src="myenergiy-approved-installer.jpg" alt="Myenergi Approved Installer" class="logo-wide">
+      <img src="Registered-Competent-Person-Electrical.jpg" alt="Registered Competent Person Electrical" class="logo-wide">
+      <img src="TrustMark_Logo_Transparent-768x347.png" alt="Trustmark" class="logo-wide">
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = {
+      quoteCounter: "ye_quote_counter_style_v1",
+      quotes: "ye_quotes_style_v1",
+      customers: "ye_customers_style_v1"
+    };
+
+    const CHARGERS = {
+      zappi: { name: "Zappi EV Charger", price: 650 },
+      ohme: { name: "Ohme ePod EV Charger", price: 530 },
+      bg: { name: "BG Sync EV Charger", price: 430 },
+      hyper: { name: "Hypervolt EV Charger", price: 645 }
+    };
+
+    const CABLES = {
+      "4swa": { name: "4mm SWA Cable", price: 3.90 },
+      "6swa": { name: "6mm SWA Cable", price: 5.00 },
+      "4ev":  { name: "4mm EV Ultra Cable", price: 6.20 },
+      "6ev":  { name: "6mm EV Ultra Cable", price: 7.90 }
+    };
+
+    const LABOUR = {
+      standard: { name: "Labour - Standard Install", price: 350 },
+      complex:  { name: "Labour - Complex Install", price: 550 },
+      day:      { name: "Labour - Full Day Rate", price: 300 }
+    };
+
+    const el = {
+      quoteNo: document.getElementById("quoteNo"),
+      quoteDate: document.getElementById("quoteDate"),
+      expiryDate: document.getElementById("expiryDate"),
+      searchQuotes: document.getElementById("searchQuotes"),
+      statusLine: document.getElementById("statusLine"),
+      savedCustomerSelect: document.getElementById("savedCustomerSelect"),
+      custName: document.getElementById("custName"),
+      custPhone: document.getElementById("custPhone"),
+      custAddress: document.getElementById("custAddress"),
+      custEmail: document.getElementById("custEmail"),
+      cableType: document.getElementById("cableType"),
+      cableLength: document.getElementById("cableLength"),
+      cableUnitPreview: document.getElementById("cableUnitPreview"),
+      customLabourWrap: document.getElementById("customLabourWrap"),
+      customLabourDesc: document.getElementById("customLabourDesc"),
+      customLabourPrice: document.getElementById("customLabourPrice"),
+      extraConsumer: document.getElementById("extraConsumer"),
+      extraTails: document.getElementById("extraTails"),
+      quoteNotes: document.getElementById("quoteNotes"),
+      quoteTerms: document.getElementById("quoteTerms"),
+      itemsBody: document.getElementById("itemsBody"),
+      costTotal: document.getElementById("costTotal"),
+      marginTotal: document.getElementById("marginTotal"),
+      quotedTotal: document.getElementById("quotedTotal"),
+      grandTotal: document.getElementById("grandTotal"),
+      savedQuotesList: document.getElementById("savedQuotesList")
+    };
+
+    function status(msg){ el.statusLine.textContent = msg; }
+    function money(n){ return Number(n || 0).toFixed(2); }
+
+    function nextQuoteNo(){
+      let n = parseInt(localStorage.getItem(STORAGE_KEYS.quoteCounter) || "1000", 10);
+      n += 1;
+      localStorage.setItem(STORAGE_KEYS.quoteCounter, String(n));
+      return "YE-" + n;
+    }
+
+    function todayISO(){ return new Date().toISOString().split("T")[0]; }
+
+    function expiryISO(days){
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().split("T")[0];
+    }
+
+    function updateCablePreview(){
+      const type = el.cableType.value;
+      el.cableUnitPreview.value = CABLES[type] ? money(CABLES[type].price) : "0.00";
+    }
+
+    function addRow(name, qty, unit){
+      const tr = document.createElement("tr");
+
+      const td1 = document.createElement("td");
+      const td2 = document.createElement("td");
+      const td3 = document.createElement("td");
+      const td4 = document.createElement("td");
+      const td5 = document.createElement("td");
+
+      const itemInput = document.createElement("input");
+      itemInput.value = name || "";
+
+      const qtyInput = document.createElement("input");
+      qtyInput.type = "number";
+      qtyInput.step = "0.01";
+      qtyInput.min = "0";
+      qtyInput.value = qty;
+
+      const unitInput = document.createElement("input");
+      unitInput.type = "number";
+      unitInput.step = "0.01";
+      unitInput.min = "0";
+      unitInput.value = unit;
+
+      const totalSpan = document.createElement("span");
+      totalSpan.textContent = "0.00";
+
+      const removeBtn = document.createElement("button");
+      removeBtn.className = "btn btn-red";
+      removeBtn.type = "button";
+      removeBtn.textContent = "Remove";
+
+      qtyInput.addEventListener("input", recalc);
+      unitInput.addEventListener("input", recalc);
+      removeBtn.addEventListener("click", function(){
+        tr.remove();
+        recalc();
+      });
+
+      td1.appendChild(itemInput);
+      td2.appendChild(qtyInput);
+      td3.appendChild(unitInput);
+      td4.innerHTML = "£";
+      td4.appendChild(totalSpan);
+      td5.appendChild(removeBtn);
+
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      tr.appendChild(td3);
+      tr.appendChild(td4);
+      tr.appendChild(td5);
+
+      tr._refs = { itemInput, qtyInput, unitInput, totalSpan };
+      el.itemsBody.appendChild(tr);
+      recalc();
+    }
+
+    function recalc(){
+      let cost = 0;
+
+      Array.from(el.itemsBody.children).forEach(function(tr){
+        const qty = parseFloat(tr._refs.qtyInput.value || "0");
+        const unit = parseFloat(tr._refs.unitInput.value || "0");
+        const total = qty * unit;
+        tr._refs.totalSpan.textContent = money(total);
+        cost += total;
+      });
+
+      const margin = cost * 0.10;
+      const quoted = cost + margin;
+
+      el.costTotal.textContent = money(cost);
+      el.marginTotal.textContent = money(margin);
+      el.quotedTotal.textContent = money(quoted);
+      el.grandTotal.textContent = money(quoted);
+    }
+
+    function addCharger(type){
+      const c = CHARGERS[type];
+      if(!c) return;
+      addRow(c.name, 1, c.price);
+      addRow("Installation Glands (2x)", 1, 20);
+      status(c.name + " added");
+    }
+
+    function addCable(){
+      const type = el.cableType.value;
+      const length = parseFloat(el.cableLength.value || "0");
+      if(length <= 0){
+        status("Enter cable length");
+        return;
+      }
+      const cable = CABLES[type];
+      addRow(cable.name + " (" + length + "m)", length, cable.price);
+      addRow("Cable Glands", Math.ceil(length / 0.4), 0.50);
+      el.cableLength.value = "";
+      status("Cable added");
+    }
+
+    function addLabour(type){
+      const l = LABOUR[type];
+      if(!l) return;
+      addRow(l.name, 1, l.price);
+      status(l.name + " added");
+    }
+
+    function toggleExtra(name, price, checked){
+      const rows = Array.from(el.itemsBody.children);
+      if(checked){
+        const exists = rows.some(function(tr){
+          return tr._refs && tr._refs.itemInput.value === name;
+        });
+        if(!exists){
+          addRow(name, 1, price);
+        }
+      } else {
+        rows.forEach(function(tr){
+          if(tr._refs && tr._refs.itemInput.value === name){
+            tr.remove();
+          }
+        });
+        recalc();
+      }
+    }
+
+    function collectItems(){
+      return Array.from(el.itemsBody.children).map(function(tr){
+        return {
+          name: tr._refs.itemInput.value,
+          qty: parseFloat(tr._refs.qtyInput.value || "0"),
+          unit: parseFloat(tr._refs.unitInput.value || "0")
+        };
+      });
+    }
+
+    function saveCustomer(){
+      const name = el.custName.value.trim();
+      if(!name){
+        alert("Enter customer name first.");
+        return;
+      }
+
+      const customer = {
+        name,
+        phone: el.custPhone.value.trim(),
+        address: el.custAddress.value.trim(),
+        email: el.custEmail.value.trim()
+      };
+
+      let list = JSON.parse(localStorage.getItem(STORAGE_KEYS.customers) || "[]");
+      const existing = list.findIndex(c => (c.name || "").toLowerCase() === name.toLowerCase());
+
+      if(existing >= 0) list[existing] = customer;
+      else list.unshift(customer);
+
+      localStorage.setItem(STORAGE_KEYS.customers, JSON.stringify(list));
+      renderCustomers();
+      el.savedCustomerSelect.value = "0";
+      status("Customer saved");
+      alert("Customer saved");
+    }
+
+    function renderCustomers(){
+      const list = JSON.parse(localStorage.getItem(STORAGE_KEYS.customers) || "[]");
+      el.savedCustomerSelect.innerHTML = '<option value="">Saved Customers</option>';
+      list.forEach(function(c, i){
+        const opt = document.createElement("option");
+        opt.value = String(i);
+        opt.textContent = c.name;
+        el.savedCustomerSelect.appendChild(opt);
+      });
+    }
+
+    function loadCustomer(){
+      const idx = el.savedCustomerSelect.value;
+      if(idx === "") return;
+      const list = JSON.parse(localStorage.getItem(STORAGE_KEYS.customers) || "[]");
+      const c = list[parseInt(idx, 10)];
+      if(!c) return;
+
+      el.custName.value = c.name || "";
+      el.custPhone.value = c.phone || "";
+      el.custAddress.value = c.address || "";
+      el.custEmail.value = c.email || "";
+      status("Customer loaded");
+    }
+
+    function saveQuote(){
+      const quote = {
+        quoteNo: el.quoteNo.value.trim(),
+        quoteDate: el.quoteDate.value,
+        expiryDate: el.expiryDate.value,
+        customer: {
+          name: el.custName.value.trim(),
+          phone: el.custPhone.value.trim(),
+          address: el.custAddress.value.trim(),
+          email: el.custEmail.value.trim()
+        },
+        notes: el.quoteNotes.value,
+        terms: el.quoteTerms.value,
+        items: collectItems(),
+        totals: {
+          total: el.grandTotal.textContent
+        }
+      };
+
+      let list = JSON.parse(localStorage.getItem(STORAGE_KEYS.quotes) || "[]");
+      const existing = list.findIndex(q => q.quoteNo === quote.quoteNo);
+
+      if(existing >= 0) list[existing] = quote;
+      else list.unshift(quote);
+
+      localStorage.setItem(STORAGE_KEYS.quotes, JSON.stringify(list));
+      renderQuotes();
+      status("Quote saved");
+      alert("Quote saved");
+    }
+
+    function loadQuote(quoteNo){
+      const list = JSON.parse(localStorage.getItem(STORAGE_KEYS.quotes) || "[]");
+      const q = list.find(item => item.quoteNo === quoteNo);
+      if(!q) return;
+
+      el.quoteNo.value = q.quoteNo || "";
+      el.quoteDate.value = q.quoteDate || "";
+      el.expiryDate.value = q.expiryDate || "";
+      el.custName.value = q.customer?.name || "";
+      el.custPhone.value = q.customer?.phone || "";
+      el.custAddress.value = q.customer?.address || "";
+      el.custEmail.value = q.customer?.email || "";
+      el.quoteNotes.value = q.notes || "";
+      el.quoteTerms.value = q.terms || "";
+
+      el.itemsBody.innerHTML = "";
+      (q.items || []).forEach(function(item){
+        addRow(item.name, item.qty, item.unit);
+      });
+
+      syncExtras();
+      recalc();
+      status("Quote loaded");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function deleteQuote(quoteNo){
+      let list = JSON.parse(localStorage.getItem(STORAGE_KEYS.quotes) || "[]");
+      list = list.filter(q => q.quoteNo !== quoteNo);
+      localStorage.setItem(STORAGE_KEYS.quotes, JSON.stringify(list));
+      renderQuotes();
+      status("Quote deleted");
+    }
+
+    function renderQuotes(){
+      const term = (el.searchQuotes.value || "").toLowerCase();
+      let list = JSON.parse(localStorage.getItem(STORAGE_KEYS.quotes) || "[]");
+
+      if(term){
+        list = list.filter(q =>
+          (q.quoteNo || "").toLowerCase().includes(term) ||
+          (q.customer?.name || "").toLowerCase().includes(term)
+        );
+      }
+
+      el.savedQuotesList.innerHTML = "";
+
+      if(!list.length){
+        el.savedQuotesList.innerHTML = '<div class="saved-item"><small>No saved quotes</small></div>';
+        return;
+      }
+
+      list.forEach(function(q){
+        const box = document.createElement("div");
+        box.className = "saved-item";
+
+        const left = document.createElement("div");
+        left.innerHTML =
+          "<strong>" + q.quoteNo + "</strong>" +
+          "<small>" + (q.customer?.name || "No customer") + " • £" + q.totals.total + "</small>" +
+          "<small>" + (q.quoteDate || "") + " • Expires " + (q.expiryDate || "") + "</small>";
+
+        const actions = document.createElement("div");
+        actions.className = "saved-actions";
+
+        const loadBtn = document.createElement("button");
+        loadBtn.className = "btn btn-neutral";
+        loadBtn.type = "button";
+        loadBtn.textContent = "Load";
+        loadBtn.addEventListener("click", () => loadQuote(q.quoteNo));
+
+        const delBtn = document.createElement("button");
+        delBtn.className = "btn btn-red";
+        delBtn.type = "button";
+        delBtn.textContent = "Delete";
+        delBtn.addEventListener("click", () => deleteQuote(q.quoteNo));
+
+        actions.appendChild(loadBtn);
+        actions.appendChild(delBtn);
+
+        box.appendChild(left);
+        box.appendChild(actions);
+        el.savedQuotesList.appendChild(box);
+      });
+    }
+
+    function clearAllQuotes(){
+      if(!confirm("Delete all saved quotes?")) return;
+      localStorage.removeItem(STORAGE_KEYS.quotes);
+      renderQuotes();
+      status("All quotes deleted");
+    }
+
+    function syncExtras(){
+      const names = Array.from(el.itemsBody.children).map(tr => tr._refs.itemInput.value);
+      el.extraConsumer.checked = names.includes("External IP Consumer Unit");
+      el.extraTails.checked = names.includes("External Meter Tails & Connection Boxes");
+    }
+
+    function newQuote(){
+      el.quoteNo.value = nextQuoteNo();
+      el.quoteDate.value = todayISO();
+      el.expiryDate.value = expiryISO(14);
+      el.custName.value = "";
+      el.custPhone.value = "";
+      el.custAddress.value = "";
+      el.custEmail.value = "";
+      el.quoteNotes.value = "";
+      el.quoteTerms.value = "• Quote valid for 14 days\n• Installation subject to site survey\n• Additional works may be charged separately\n• Payment due on completion";
+      el.customLabourWrap.style.display = "none";
+      el.customLabourPrice.value = "";
+      el.cableLength.value = "";
+      el.itemsBody.innerHTML = "";
+      el.extraConsumer.checked = false;
+      el.extraTails.checked = false;
+      recalc();
+      status("New quote created");
+    }
+
+    async function loadPdfImage(src){
+      const response = await fetch(src);
+      if (!response.ok) throw new Error("Failed to load " + src);
+
+      const blob = await response.blob();
+      const format = blob.type.includes("jpeg") || blob.type.includes("jpg") ? "JPEG" : "PNG";
+
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+
+      return { dataUrl, format };
+    }
+
+    async function downloadPDF(){
+      try{
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const quote = {
+          quoteNo: el.quoteNo.value || "",
+          quoteDate: el.quoteDate.value || "",
+          expiryDate: el.expiryDate.value || "",
+          customer: {
+            name: el.custName.value || "",
+            phone: el.custPhone.value || "",
+            address: el.custAddress.value || "",
+            email: el.custEmail.value || ""
+          },
+          notes: el.quoteNotes.value || "",
+          terms: el.quoteTerms.value || "",
+          items: collectItems()
+        };
+
+        const footerLogos = [
+          "Dahua-Registered-Installer.png",
+          "city-guilds-logo.png",
+          "HIKVision-Approved-Installers.jpg",
+          "lcl.png",
+          "myenergiy-approved-installer.jpg",
+          "Registered-Competent-Person-Electrical.jpg",
+          "TrustMark_Logo_Transparent-768x347.png"
+        ];
+
+        let mainLogo = null;
+        let napitLogo = null;
+        const footerImages = [];
+
+        try { mainLogo = await loadPdfImage("logo.png"); } catch(e) {}
+        try { napitLogo = await loadPdfImage("napit.png"); } catch(e) {}
+
+        for (const file of footerLogos) {
+          try {
+            const img = await loadPdfImage(file);
+            footerImages.push({ file, ...img });
+          } catch(e) {}
+        }
+
+        if(mainLogo){
+          pdf.addImage(mainLogo.dataUrl, mainLogo.format, 14, 10, 25, 25);
+        }
+
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(18);
+        pdf.text("Yellowstone Electrical", 42, 16);
+
+        pdf.setFont("helvetica", "normal");
+        pdf.setFontSize(10);
+        pdf.text("Where Electrics Meets Excellence", 42, 22);
+        pdf.text("admin@YellowstoneElectrical.co.uk", 14, 40);
+        pdf.text("07305 784337", 14, 45);
+        pdf.text("www.YellowstoneElectrical.co.uk", 14, 50);
+
+        pdf.setFont("helvetica", "bold");
+        pdf.text("DATE", 150, 15);
+        pdf.text("Quote #", 150, 21);
+
+        pdf.setFont("helvetica", "normal");
+        pdf.text(quote.quoteDate || "", 170, 15);
+        pdf.text(quote.quoteNo || "", 170, 21);
+
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Note To:", 14, 55);
+        pdf.text("Prepared by:", 110, 55);
+
+        pdf.setFont("helvetica", "normal");
+        pdf.text(quote.customer.name || "", 14, 61);
+        pdf.text("Jat Singh", 110, 61);
+
+        const addrLines = pdf.splitTextToSize(quote.customer.address || "", 82);
+        pdf.text(addrLines, 14, 67);
+        const addrHeight = Math.max(1, addrLines.length) * 5;
+        pdf.text(quote.customer.email || "", 14, 67 + addrHeight + 5);
+
+        let y = Math.max(90, 67 + addrHeight + 18);
+
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Comments or special instructions:", 14, y);
+        y += 6;
+
+        pdf.setFont("helvetica", "normal");
+        const noteLines = pdf.splitTextToSize(quote.notes || "None", 180);
+        pdf.text(noteLines, 14, y);
+        y += Math.max(10, noteLines.length * 5 + 6);
+
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Description", 14, y);
+        pdf.text("QTY", 171, y);
+        y += 2;
+        pdf.line(14, y, 196, y);
+        y += 6;
+
+        pdf.setFont("helvetica", "normal");
+        quote.items.forEach(item => {
+          const lines = pdf.splitTextToSize(item.name || "", 150);
+          if(y > 235){
+            pdf.addPage();
+            y = 20;
+          }
+          pdf.text(lines, 14, y);
+          pdf.text(String(item.qty ?? ""), 171, y);
+          y += lines.length * 5 + 2;
+        });
+
+        y += 4;
+        pdf.line(132, y, 196, y);
+        y += 7;
+
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(14);
+        pdf.text("TOTAL", 145, y);
+        pdf.text("£" + el.grandTotal.textContent, 196, y, { align: "right" });
+
+        y += 12;
+        if(y > 240){
+          pdf.addPage();
+          y = 20;
+        }
+
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Terms & Conditions", 14, y);
+        y += 6;
+
+        pdf.setFont("helvetica", "normal");
+        const termLines = pdf.splitTextToSize(quote.terms || "", 180);
+        pdf.text(termLines, 14, y);
+
+        pdf.setFontSize(8.5);
+        pdf.text(
+          "If you have any questions concerning this Quote, Contact Jat on 07305 784337 or info@yellowstoneelectrical.co.uk",
+          14,
+          280
+        );
+
+        if(napitLogo){
+          pdf.addImage(napitLogo.dataUrl, napitLogo.format, 14, 284, 20, 9);
+        }
+
+        if(footerImages.length){
+          let x = 38;
+          const baseY = 284;
+
+          footerImages.forEach((img) => {
+            let w = 20;
+            let h = 8;
+            if(img.file.includes("Dahua")) { w = 18; h = 10; }
+            if(img.file.includes("city-guilds")) { w = 22; h = 8; }
+            if(img.file.includes("HIKVision")) { w = 24; h = 7; }
+            if(img.file.includes("lcl")) { w = 19; h = 8; }
+            if(img.file.includes("myenergiy")) { w = 22; h = 7; }
+            if(img.file.includes("Registered-Competent")) { w = 24; h = 10; }
+            if(img.file.includes("TrustMark")) { w = 26; h = 9; }
+
+            if(x + w > 196) return;
+            pdf.addImage(img.dataUrl, img.format, x, baseY, w, h);
+            x += w + 3;
+          });
+        }
+
+        pdf.save((quote.quoteNo || "quote") + ".pdf");
+        status("PDF downloaded");
+      } catch(err){
+        console.error(err);
+        alert("PDF failed - check browser console");
+        status("PDF failed");
+      }
+    }
+
+    document.getElementById("btnZappi").addEventListener("click", () => addCharger("zappi"));
+    document.getElementById("btnOhme").addEventListener("click", () => addCharger("ohme"));
+    document.getElementById("btnBg").addEventListener("click", () => addCharger("bg"));
+    document.getElementById("btnHyper").addEventListener("click", () => addCharger("hyper"));
+
+    document.getElementById("btnLabourStandard").addEventListener("click", () => addLabour("standard"));
+    document.getElementById("btnLabourComplex").addEventListener("click", () => addLabour("complex"));
+    document.getElementById("btnLabourDay").addEventListener("click", () => addLabour("day"));
+
+    document.getElementById("showCustomLabour").addEventListener("click", () => {
+      el.customLabourWrap.style.display = el.customLabourWrap.style.display === "none" ? "grid" : "none";
+    });
+
+    document.getElementById("addCustomLabourBtn").addEventListener("click", () => {
+      const desc = el.customLabourDesc.value.trim() || "Labour - Custom";
+      const price = parseFloat(el.customLabourPrice.value || "0");
+      if(price <= 0){
+        status("Enter custom labour price");
+        return;
+      }
+      addRow(desc, 1, price);
+      el.customLabourPrice.value = "";
+      status("Custom labour added");
+    });
+
+    document.getElementById("addCableBtn").addEventListener("click", addCable);
+    document.getElementById("saveCustomerBtn").addEventListener("click", saveCustomer);
+    document.getElementById("saveQuoteBtn").addEventListener("click", saveQuote);
+    document.getElementById("downloadPdfBtn").addEventListener("click", downloadPDF);
+    document.getElementById("newQuoteBtn").addEventListener("click", newQuote);
+    document.getElementById("refreshQuotesBtn").addEventListener("click", renderQuotes);
+    document.getElementById("deleteAllQuotesBtn").addEventListener("click", clearAllQuotes);
+
+    document.getElementById("clearItemsBtn").addEventListener("click", () => {
+      el.itemsBody.innerHTML = "";
+      el.extraConsumer.checked = false;
+      el.extraTails.checked = false;
+      recalc();
+      status("Items cleared");
+    });
+
+    document.getElementById("addManualBtn").addEventListener("click", () => addRow("Manual Item", 1, 0));
+    document.getElementById("savedCustomerSelect").addEventListener("change", loadCustomer);
+    document.getElementById("searchQuotes").addEventListener("input", renderQuotes);
+    document.getElementById("cableType").addEventListener("change", updateCablePreview);
+
+    el.extraConsumer.addEventListener("change", e => toggleExtra("External IP Consumer Unit", 85, e.target.checked));
+    el.extraTails.addEventListener("change", e => toggleExtra("External Meter Tails & Connection Boxes", 50, e.target.checked));
+
+    function init(){
+      el.quoteNo.value = nextQuoteNo();
+      el.quoteDate.value = todayISO();
+      el.expiryDate.value = expiryISO(14);
+      renderCustomers();
+      renderQuotes();
+      updateCablePreview();
+      recalc();
+      status("Ready");
+    }
+
+    init();
+  </script>
+</body>
+</html>
